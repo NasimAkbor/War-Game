@@ -33,18 +33,81 @@ class Deck {
       this.cards[i] = this.cards[nexRand];
       this.cards[nexRand] = pHolder;
     }
-    playerOneHand.push(this.cards.splice(0, this.cards.length / 2));
-    playerTwoHand.push(this.cards.splice(0, this.cards.length));
+    //Then, split the deck in half and put it into the player's hands.
+    playerOneHand = this.cards.splice(0, this.cards.length / 2);
+    playerTwoHand = this.cards.splice(0, this.cards.length);
 
   }
 }
 
-playerOneHand = [];
-playerTwoHand = [];
+//Player's Hands
+let playerOneHand;
+let playerTwoHand;
 
 let popo = new Deck;
 
-console.log(popo.cards);
-console.log(popo.cards[0]);
-console.log(playerOneHand);
-console.log(playerTwoHand);
+function war(empPile = []) { //function if same cards are played
+  let j = 1;
+  while (j > 0) {
+    let x = playerOneHand.length;
+    let y = playerTwoHand.length;
+    if (x < 5) {
+      console.log('Player 1 does not have enough cards. Player 1 loses. A total of ' + n + ' rounds were played.');
+      break;
+    } else if (y < 5) {
+      console.log('Player 2 does not have enough cards. Player 2 loses A total of ' + n + ' rounds were played.');
+      break;
+    } else {
+      warPile = empPile;
+      //console.log(warPile)
+      console.log('Draw. Engage in War');
+      console.log('Player 1 puts down 3 cards and then plays the ' + playerOneHand[4].rank + ' of ' + playerOneHand[4].suit)
+      warPile = warPile.concat(playerOneHand.splice(0, 4));
+      console.log(warPile);
+      console.log('Player 2 puts down 3 cards and then plays the ' + playerTwoHand[4].rank + ' of ' + playerTwoHand[4].suit)
+      warPile = warPile.concat(playerTwoHand.splice(0, 4));
+      console.log(warPile);
+      if (playerOneHand[0].score > playerTwoHand[0].score) {
+        console.log('Player 1 wins the round and takes the cards')
+        playerOneHand = playerOneHand.concat(warPile, playerTwoHand.shift(), playerOneHand.shift());
+        j--;
+      } else if (playerOneHand[0].score < playerTwoHand[0].score) {
+        console.log('Player 2 wins the round and takes the cards')
+        playerTwoHand = playerTwoHand.concat(warPile, playerOneHand.shift(), playerTwoHand.shift());
+        j--;
+      } else {
+        warPile = warPile.concat(playerOneHand.splice(0, 1), playerTwoHand.splice(0, 1));
+        war(warPile);
+        j--;
+      }
+    }
+  }
+}
+let n = 1; //Round count
+//While loop contains all rounds of match
+while (playerOneHand.length !== 0 || playerOneHand.length !== 0) {
+  console.log('Round ' + n)
+  let x = playerOneHand.length;
+  let y = playerTwoHand.length;
+  if (x < 5) {
+    console.log('Player 1 does not have enough cards. Player 1 loses. A total of ' + n + ' rounds were played.');
+    break;
+  } else if (y < 5) {
+    console.log('Player 2 does not have enough cards. Player 2 loses. A total of ' + n + ' rounds were played.');
+    break;
+  }
+  console.log('Player 1 has ' + x + ' cards')
+  console.log('Player 2 has ' + y + ' cards')
+  console.log('Player 1 plays ' + playerOneHand[0].rank + ' of ' + playerOneHand[0].suit);
+  console.log('Player 2 plays ' + playerTwoHand[0].rank + ' of ' + playerTwoHand[0].suit)
+  if (playerOneHand[0].score > playerTwoHand[0].score) {
+    console.log('Player 1 wins the round and takes the card')
+    playerOneHand.push(playerTwoHand.shift(), playerOneHand.shift());
+  } else if (playerOneHand[0].score < playerTwoHand[0].score) {
+    console.log('Player 2 wins the round and takes the card')
+    playerTwoHand.push(playerOneHand.shift(), playerTwoHand.shift());
+  } else {
+    war();
+  }
+  n++;
+}
