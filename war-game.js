@@ -1,4 +1,4 @@
-class Card {
+class Card { //Class for each individual card
   constructor(suit, rank, score) {
     this.suit = suit;
     this.rank = rank;
@@ -6,7 +6,7 @@ class Card {
   }
 }
 
-class Deck {
+class Deck { //Class for creating a deck; It builds a deck, splits it, and distributes it to the player hands
   constructor() {
     this.cards = [];
     this.allCards();
@@ -51,7 +51,7 @@ function war(empPile = []) { //function if same cards are played
   while (j > 0) {
     let x = playerOneHand.length;
     let y = playerTwoHand.length;
-    if (x < 5) {
+    if (x < 5) { //Check to see if enough cards to go through with war
       console.log('Player 1 does not have enough cards. Player 1 loses. A total of ' + n + ' rounds were played.');
       break;
     } else if (y < 5) {
@@ -59,7 +59,6 @@ function war(empPile = []) { //function if same cards are played
       break;
     } else {
       warPile = empPile;
-      //console.log(warPile)
       console.log('Draw. Engage in War');
       console.log('Player 1 puts down 3 cards and then plays the ' + playerOneHand[4].rank + ' of ' + playerOneHand[4].suit)
       warPile = warPile.concat(playerOneHand.splice(0, 4));
@@ -69,15 +68,15 @@ function war(empPile = []) { //function if same cards are played
       console.log(warPile);
       if (playerOneHand[0].score > playerTwoHand[0].score) {
         console.log('Player 1 wins the round and takes the cards')
-        playerOneHand = playerOneHand.concat(warPile, playerTwoHand.shift(), playerOneHand.shift());
+        playerOneHand = playerOneHand.concat(warPile, playerTwoHand.shift(), playerOneHand.shift()); //Winner gains all cards put up for war
         j--;
       } else if (playerOneHand[0].score < playerTwoHand[0].score) {
         console.log('Player 2 wins the round and takes the cards')
-        playerTwoHand = playerTwoHand.concat(warPile, playerOneHand.shift(), playerTwoHand.shift());
+        playerTwoHand = playerTwoHand.concat(warPile, playerOneHand.shift(), playerTwoHand.shift()); //Winner gains all cards put up for war
         j--;
       } else {
-        warPile = warPile.concat(playerOneHand.splice(0, 1), playerTwoHand.splice(0, 1));
-        war(warPile);
+        warPile = warPile.concat(playerOneHand.splice(0, 1), playerTwoHand.splice(0, 1));//Puts the cards that competed in the first war into the warPile to ensure card count.
+        war(warPile); //Can go through war several times if the same card is played repeatedly
         j--;
       }
     }
